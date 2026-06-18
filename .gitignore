@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+.pnp/
+.yarn/
+
+# Builds / output
+dist/
+build/
+out/
+.next/
+.turbo/
+*.tsbuildinfo
+
+# Tests / coverage
+coverage/
+.nyc_output/
+
+# Env (keep .env.example)
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Dart / Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
