@@ -82,6 +82,7 @@ src/
         └── styles/
             └── globals.css   ← Tailwind v4 entry (@import "tailwindcss"); @theme tokens
 
+test/                          ← mirrors src/ (see Test structure)
 electron.vite.config.ts        ← electron-vite: main / preload / renderer configs
 electron-builder.yml           ← appId, productName, mac/win/linux targets
 tsconfig.{json,node,web}.json  ← root refs + node (main/preload) + web (renderer)
@@ -99,8 +100,37 @@ types/         ← TS interfaces for this feature's models / DTOs
 validators/    ← input/output schemas (form + API response shapes)
 ```
 
-Every file a Builder creates must fit this tree. New top-level folders require
+Every file a Builder creates must fit this tree; test files follow
+**Test structure** below. New top-level folders require
 developer approval first. (Today these folders hold only `.gitkeep` — the scaffold.)
+
+## Test structure (HARD)
+
+Applies to every project built from this template. QA rejects a task whose test files break any rule below.
+
+```
+src/main/index.ts                                  → test/main/index.spec.ts
+src/preload/index.ts                               → test/preload/index.spec.ts
+src/renderer/src/app/router.tsx                    → test/renderer/src/app/router.spec.tsx
+```
+
+```
+test/
+├── helpers/                   ← node.ts (electron/IPC mocks), renderer.tsx (providers, window.api mock)
+├── main/                      ← mirrors src/main (lifecycle, IPC handlers)
+├── preload/                   ← mirrors src/preload (exposed bridge surface)
+├── renderer/src/              ← mirrors src/renderer/src: app/, layout/, features/<name>/, shared/
+└── e2e/                       ← <flow>.e2e-spec.ts (Playwright _electron)
+```
+
+1. **One location only.** Every test file lives under `test/` — never next to a source file, never inside a module/feature folder, never in a second test folder.
+2. **Mirror the source tree.** `test/` mirrors `src/` one-to-one, per process (`main/`, `preload/`, `renderer/`). Same folder names, same file names, plus the `.spec.ts` / `.spec.tsx` suffix.
+3. **One spec per source file**, at its mirrored path. Moving or renaming a source file moves or renames its spec in the same task.
+4. **No catch-all spec.** Logic shared across the app is tested at the mirrored path of the file that owns it — never in a "global" / "misc" / "utils" spec file.
+5. **Shared test code** lives in `test/helpers/` — `node.ts` (main/preload: electron + IPC mocks) and `renderer.tsx` (render-with-providers, `window.api` bridge mock). Never mix the two contexts. Specs never import from other specs.
+6. **End-to-end tests** live only in `test/e2e/` (Playwright `_electron`, launching the built app), named `<flow>.e2e-spec.ts`. Unit/integration specs never go there, and e2e specs never go anywhere else.
+7. **Runner config follows the folder.** No test runner is wired yet — when one is added (Vitest: a `node` project for `test/main` + `test/preload`, a `jsdom` project for `test/renderer`; Playwright for e2e), its globs cover only `test/**/*.spec.{ts,tsx}` (excluding `test/e2e/`), coverage measures `src/`, and the commands go into the table above.
+8. **Legacy layout is drift, not precedent.** If existing code or a feature spec places tests elsewhere (e.g. a module's own `tests/` folder), new and modified tests still go to the mirrored path; moving the old ones is its own task — surface the drift to the developer, never silently mass-move files.
 
 ## Boundary rules (HARD)
 

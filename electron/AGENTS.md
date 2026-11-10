@@ -129,7 +129,9 @@ Builders, QA, and the Orchestrator. §5 says who may write; this says how:
 1. Lint — zero errors
 2. Typecheck — zero errors; suppressions need written reasons
 3. Native build — the real build command exits 0 (typecheck alone is insufficient)
-4. Tests — all old and new tests pass
+4. Tests — all old and new tests pass, and every test file sits at its mirrored
+   path in the single test folder (`context/architecture.md` → Test structure) —
+   none beside source files or inside module/feature folders
 5. Acceptance criteria — verified item by item, not assumed
 6. Standards — placement per `context/architecture.md`; tokens-only UI; validated,
    enveloped, auth-guarded APIs; no unlinked TODO/FIXME
