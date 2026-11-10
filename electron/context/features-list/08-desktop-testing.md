@@ -21,6 +21,10 @@ renderer component/unit tests (mocked API client + mocked query hooks, and a moc
 bridge contract, Playwright-for-Electron e2e for critical flows against the built app (with
 intercepted backend responses), and automated a11y assertions — all wired to pnpm scripts.
 
+## Test layout (HARD)
+
+All tests in this feature follow `context/architecture.md` → **Test structure**: `test/` — `main.spec.ts(x)`, `app.spec.ts(x)`, `setup.ts`, `helpers.ts(x)`, folders mirroring `src/` (`*.spec.ts(x)`), `e2e/` (`*.e2e-spec.ts`, own `helpers.ts` allowed). Any path elsewhere in this spec that sits outside that layout (`src/**/tests/`, `src/test/`, a root `tests/` or `e2e/`, `*.test.*`, `conftest.py`) describes the current/legacy suite — it is migrated by this feature, never extended.
+
 ## Scope
 
 ### Tooling & config to install
@@ -30,13 +34,13 @@ intercepted backend responses), and automated a11y assertions — all wired to p
 - `@testing-library/react`, `@testing-library/user-event`, `@testing-library/jest-dom`.
 - `@playwright/test` (drives Electron via `_electron.launch({ args: ["."] })`) +
   `@axe-core/playwright` for a11y.
-- `vitest.config.ts` (jsdom project for `src/renderer`, node project for `src/main` +
-  `src/preload`, `setupFiles: src/test/setup.ts`); `playwright.config.ts` (single Electron
+- `vitest.config.ts` (jsdom project for `test/app.spec.tsx` + `test/renderer`, node project for `test/main.spec.ts` +
+  `test/preload`, `setupFiles: test/setup.ts`); `playwright.config.ts` (single Electron
   project; builds the app with `pnpm build` then launches the packaged `out/main/index.js`).
-- `src/test/setup.ts` — registers `@testing-library/jest-dom`, clears storage between tests,
+- `test/setup.ts` — registers `@testing-library/jest-dom`, clears storage between tests,
   polyfills `matchMedia`, and stubs `window.api` + `window.electron` (the preload bridge) so
   renderer components run under jsdom without a real main process.
-- `src/test/render.tsx` — `renderWithProviders` mounting components with i18n, React Query
+- `test/helpers.tsx` — `renderWithProviders` mounting components with i18n, React Query
   (fresh client, retries off), an in-memory `MemoryRouter`, and the stubbed IPC bridge.
 
 ### Scripts (`package.json`)
@@ -57,32 +61,32 @@ intercepted backend responses), and automated a11y assertions — all wired to p
   `src/preload/index.d.ts` and each method forwards to the expected `ipcRenderer.invoke`
   channel name.
 - E2E mocks the backend at the network layer (Playwright route interception) returning the
-  `{ success, data, meta? }` envelope (`e2e/helpers/api-mock.ts`).
+  `{ success, data, meta? }` envelope (`test/e2e/helpers.ts`).
 
 ### Unit / component tests (Vitest)
 
-- `shared/libs/api.test.ts` — envelope unwrap, typed `ApiError`, 204, pagination `meta`,
+- `shared/libs/api.spec.ts` — envelope unwrap, typed `ApiError`, 204, pagination `meta`,
   401 → refresh → retry.
-- `identity/services/auth.service.test.ts` — token persist/clear via mocked bridge, refresh
+- `identity/services/auth.service.spec.ts` — token persist/clear via mocked bridge, refresh
   rotation, pending-2FA.
-- `preload/bridge.test.ts` — exposed `api` surface matches the declared types + channel names.
-- Zod validators: `identity/validators/auth.validator.test.ts`,
-  `message/validators/message.validator.test.ts`,
-  `payment/validators/payment.validator.test.ts`.
+- `preload/bridge.spec.ts` — exposed `api` surface matches the declared types + channel names.
+- Zod validators: `identity/validators/auth.validator.spec.ts`,
+  `message/validators/message.validator.spec.ts`,
+  `payment/validators/payment.validator.spec.ts`.
 - One+ representative component per feature domain (identity sign-in/sign-up forms; analytic
   stat-cards; audit alert-table resolve; payment payment-list refund; notification list
   mark-read; message compose/list) against mocked hooks/client.
 
 ### E2E (Playwright-for-Electron)
 
-- `e2e/launch.spec.ts` — the app launches, the main window appears, and the renderer mounts
+- `test/e2e/launch.e2e-spec.ts` — the app launches, the main window appears, and the renderer mounts
   (HashRouter `#/`) + axe (no serious/critical violations).
-- `e2e/route-guard.spec.ts` — unauthenticated deep link to a dashboard route redirects to
+- `test/e2e/route-guard.e2e-spec.ts` — unauthenticated deep link to a dashboard route redirects to
   `/sign-in` (hash route).
-- `e2e/auth-flow.spec.ts` — sign-in happy path lands on `/dashboard` and persists the refresh
+- `test/e2e/auth-flow.e2e-spec.ts` — sign-in happy path lands on `/dashboard` and persists the refresh
   token through the bridge; sign-out returns to `/sign-in` and clears it. Backend mocked via
   route interception.
-- `e2e/preferences.spec.ts` — locale switch persists across relaunch; theme toggle persists
+- `test/e2e/preferences.e2e-spec.ts` — locale switch persists across relaunch; theme toggle persists
   across relaunch.
 
 ## Consumed API
@@ -92,17 +96,18 @@ intercepted backend responses), and automated a11y assertions — all wired to p
 
 ## UI / components used
 
-- Test utilities under `src/test/*` (`renderWithProviders` wrapping i18n / Query / router /
-  stubbed IPC bridge); e2e helpers under `e2e/helpers/*`; existing feature components/pages
+- Test utilities in `test/setup.ts` + `test/helpers.tsx` (`renderWithProviders` wrapping i18n / Query / router /
+  stubbed IPC bridge); e2e helpers in `test/e2e/helpers.ts`; existing feature components/pages
   and the preload bridge as units under test.
 
 ## Acceptance criteria
 
+- [ ] Test layout matches `context/architecture.md` → Test structure: every existing test is moved to its mirrored path and renamed to the stack suffix; nothing test-related remains under the source root; runner config (globs, setup file, e2e dir, coverage root) points at the test folder; the collected-test count is not lower after the move.
 - [ ] Vitest, React Testing Library, Playwright-for-Electron, and axe are installed and
       configured; `test` / `test:watch` / `test:coverage` / `test:e2e` / `test:e2e:ui` scripts
       run.
 - [ ] `renderWithProviders` (i18n + Query + router + stubbed `window.api`) and
-      `src/test/setup.ts` exist and are used by component tests.
+      `test/setup.ts` exist and are used by component tests.
 - [ ] `shared/libs/api.ts` is unit-tested (envelope, `ApiError`, 204, `meta`, 401-refresh) and
       the auth service is tested against a mocked token bridge (no real `safeStorage`).
 - [ ] The preload bridge contract test asserts the exposed `api` shape matches `index.d.ts`

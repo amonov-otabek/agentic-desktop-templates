@@ -90,6 +90,10 @@ Electron + React desktop project. Treat as locked.
 
 ## Testing
 
+- **Where tests live (HARD):** every test file goes in `test/` (`main`, `app`, `setup`, `helpers`, `e2e/`), at the path that
+  mirrors its source file — see `context/architecture.md` → **Test structure**. Never beside a
+  source file, never inside a module/feature folder. `setup` keeps the suite
+  self-contained: tests run on a clean checkout with no developer `.env`.
 - No test runner is wired yet. When a task needs tests, add Vitest +
   React Testing Library for the renderer; note the new dependency in QA notes.
 - New behavior ships with a happy-path test plus at least one edge/error case once a
