@@ -13,7 +13,7 @@ rebuilt (lesson learned from previous projects).
 - Personality: **clean, professional, desktop-native** — calm neutrals, a single
   accent, generous whitespace, dense-enough for productivity views. Matches the web
   and mobile clients of the same backend.
-- Reference: the current renderer (`app-shell.tsx`, `home-page.tsx`) uses a neutral
+- Reference: the current renderer (`AppShell.tsx`, `HomePage.tsx`) uses a neutral
   surface + white cards aesthetic; the tokens below codify and replace those ad-hoc
   Tailwind palette classes (`neutral-*`).
 
@@ -126,7 +126,7 @@ component; audited by QA and /review. One entry per component:
 
 ```markdown
 ### ComponentName
-- Path: `shared/components/ui/component-name.tsx` (or `features/<name>/components/…`)
+- Path: `shared/components/ui/ComponentName.tsx` (or `features/<name>/components/…`)
 - Purpose: one line
 - Variants/props: the public API surface
 - States: default / hover / focus-visible / disabled / loading (interactive)

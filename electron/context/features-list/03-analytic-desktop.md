@@ -24,7 +24,7 @@ against the backend analytic API via the typed client.
 - **Events chart** (`components/events-chart`) — time-series visualization using the chart
   token ramp (`--chart-1…5`); presentational, receives series via props.
 - **Event list** (`components/event-list`) — paginated table of analytics events
-  (`?page&limit`) using `shared/hooks/use-pagination` + the `pager` widget.
+  (`?page&limit`) using `shared/hooks/usePagination` + the `pager` widget.
 - **Queries** (`queries/analytics.queries`) — `useDashboard` (summary) and `useEvents`
   (paginated); typed via `types/analytics.types` (`DashboardSummary`, `AnalyticsEvent`,
   `EventListQuery`); data fetched via `api/analytics.api`.
@@ -38,7 +38,7 @@ Base `/api/v1/analytics`, envelope `{ success, data, meta? }`; access token atta
 client (Bearer in memory).
 
 - `GET /analytics/dashboard` → `DashboardSummary` (headline metrics). **`admin`-only on the
-  backend** — the page is role-gated client-side via `use-permission` (UX only; the backend
+  backend** — the page is role-gated client-side via `usePermission` (UX only; the backend
   enforces and returns `403` for non-admins).
 - `GET /analytics/events?page&limit` → paginated `AnalyticsEvent[]` with `meta`.
 
@@ -46,13 +46,13 @@ client (Bearer in memory).
 
 - `features/analytic/components/{stat-cards,events-chart,event-list}`.
 - `shared/components/ui/*` (`card`, `chart`, `table`, `skeleton`, `empty`, `badge`); widgets
-  `pager`; `shared/hooks/use-pagination`; `shared/hooks/use-permission` (gating);
+  `pager`; `shared/hooks/usePagination`; `shared/hooks/usePermission` (gating);
   `DashboardLayout`; `lucide-react` icons.
 
 ## Acceptance criteria
 
 - [ ] `/analytics` renders behind the auth guard (unauthenticated → `/sign-in`) and is
-      role-gated via `use-permission` (the dashboard endpoint is `admin`-only on the backend).
+      role-gated via `usePermission` (the dashboard endpoint is `admin`-only on the backend).
 - [ ] Stat cards render headline metrics from `GET /analytics/dashboard`.
 - [ ] The events chart renders a time series using only chart tokens (`--chart-1…5`) — no
       hardcoded colors.

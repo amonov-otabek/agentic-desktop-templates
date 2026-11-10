@@ -15,6 +15,7 @@ Electron + React desktop project. Treat as locked.
 
 ## TypeScript
 
+- **File names (HARD):** PascalCase for pages, components, layouts and providers; camelCase for hooks (`useX.ts`) and every other module; lowercase/kebab-case folders; generated and framework-reserved files keep their names — full table in `context/ui-rules.md` → File naming.
 - Strict mode (`strict: true`), `noUnusedLocals`, `noUnusedParameters`,
   `verbatimModuleSyntax`, `isolatedModules` all on (both project refs).
 - No `any` — use precise types or `unknown` + narrowing. No `as` to silence errors.

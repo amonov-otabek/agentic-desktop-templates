@@ -50,7 +50,7 @@ Base `/api/v1`, envelope `{ success, data, meta? }`; Bearer access token attache
 - `features/payment/components/{payment-list,payment-create-form,invoice-list}`.
 - `shared/components/ui/*` (`table`, `card`, `input`, `field`, `select`, `button`,
   `dialog`/`alert-dialog` for refund/pay confirm, `badge`, `skeleton`, `empty`, `toaster`);
-  widgets `pager`; `shared/hooks/use-pagination`; `DashboardLayout`; `lucide-react` icons.
+  widgets `pager`; `shared/hooks/usePagination`; `DashboardLayout`; `lucide-react` icons.
 
 ## Acceptance criteria
 

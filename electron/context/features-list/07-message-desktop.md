@@ -46,7 +46,7 @@ the client.
 - `features/message/components/{message-compose-form,message-list}`.
 - `shared/components/ui/*` (`card`, `table`, `input`, `textarea`, `field`, `select`,
   `button`, `badge`, `skeleton`, `empty`, `toaster`); widgets `pager`;
-  `shared/hooks/use-pagination`; `DashboardLayout`; `lucide-react` icons.
+  `shared/hooks/usePagination`; `DashboardLayout`; `lucide-react` icons.
 
 ## Acceptance criteria
 

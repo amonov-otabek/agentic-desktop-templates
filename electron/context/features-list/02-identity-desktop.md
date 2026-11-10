@@ -35,7 +35,7 @@ reset, 2FA, profile/settings, and a role-gated admin user-management surface.
   list + revoke / revoke-all.
 - **Admin users page** (`features/identity/pages/users-page`, `/users`) — paginated user
   list, detail, toggle-active, role assignment, delete; roles list. Gated by role via
-  `shared/hooks/use-permission`.
+  `shared/hooks/usePermission`.
 - **Session / token handling** (`services/auth.service.ts`) — access token in renderer
   memory; refresh token persisted via the FEAT-01 preload bridge (`window.api.token.*` →
   main `safeStorage`); `loadSession()` hydrates on startup by reading the stored refresh
@@ -77,7 +77,7 @@ Secure token persistence is local via the preload bridge, not an HTTP endpoint.
   `roles-table`.
 - `shared/components/ui/*` primitives (button, card, input, field, label, tabs, table,
   dialog, alert-dialog, badge, input-otp, pagination, toaster), `shared/hooks`
-  (`use-permission`, `use-pagination`, `use-toast`), `AuthLayout` / `DashboardLayout`,
+  (`usePermission`, `usePagination`, `useToast`), `AuthLayout` / `DashboardLayout`,
   `lucide-react` icons.
 
 ## Acceptance criteria
@@ -96,7 +96,7 @@ Secure token persistence is local via the preload bridge, not an HTTP endpoint.
       → disable.
 - [ ] Settings page edits profile, lists + revokes sessions (single + all), and manages 2FA.
 - [ ] Admin users page lists (paginated), shows detail, toggles active, assigns a role, and
-      deletes — gated by `use-permission`; non-admins cannot reach it.
+      deletes — gated by `usePermission`; non-admins cannot reach it.
 - [ ] Server field errors (`error.fields`) map onto the right form inputs; assertions branch on
       `error.code`, never message text.
 - [ ] All copy + validation errors localized (en/ru/uz); auth state in the Zustand store;

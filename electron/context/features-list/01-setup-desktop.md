@@ -77,7 +77,7 @@ i18next, and packages to `.dmg` / NSIS / AppImage via electron-builder.
 - **Route guard (to build)** — dashboard routes check `isAuthenticated()` and redirect
   unauthenticated users to `/sign-in`; authenticated users skip the auth group. Guards are
   UX-only — the backend remains the authz source of truth (`401/403` clears the session).
-- **Providers (exists, extend)** (`src/renderer/src/shared/components/provider/providers.tsx`)
+- **Providers (exists, extend)** (`src/renderer/src/shared/components/provider/Providers.tsx`)
   — today holds only a `QueryClient`. Extend to compose in order i18n → theme → TanStack
   Query → toaster; stays mounted in `main.tsx` wrapping `<RouterProvider/>`.
 - **Production build & packaging (exists, verify)** — `pnpm build` (`electron-vite build` →
@@ -94,7 +94,7 @@ i18next, and packages to `.dmg` / NSIS / AppImage via electron-builder.
 
 ## UI / components used
 
-- Layout shells (`src/renderer/src/layout/*`), `shared/components/provider/providers.tsx`,
+- Layout shells (`src/renderer/src/layout/*`), `shared/components/provider/Providers.tsx`,
   `shared/components/ui/*` (tokens-only primitives), `shared/components/widgets/*`
   (locale-switch, theme-toggle, pager, sidebar-nav), `shared/hooks/*`, `shared/libs/{utils,api}.ts`,
   tokens in `src/renderer/src/styles/globals.css`, icons from `lucide-react`.

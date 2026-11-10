@@ -59,7 +59,7 @@ attached by the client. Native-notification display is a local IPC bridge, not a
 
 - `features/notification/components/{notification-list,preferences-form}`.
 - `shared/components/ui/*` (`card`, `table`/`item`, `switch`, `checkbox`, `badge`, `button`,
-  `tabs`, `skeleton`, `empty`, `toaster`); widgets `pager`; `shared/hooks/use-pagination`;
+  `tabs`, `skeleton`, `empty`, `toaster`); widgets `pager`; `shared/hooks/usePagination`;
   `DashboardLayout`; `lucide-react` icons.
 
 ## Acceptance criteria

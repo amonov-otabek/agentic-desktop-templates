@@ -134,7 +134,7 @@ Builders, QA, and the Orchestrator. §5 says who may write; this says how:
    `setup`, `helpers`, `e2e/`), every other spec at its mirrored source path — none
    beside source files or inside module/feature folders. 0 collected tests = fail
 5. Acceptance criteria — verified item by item, not assumed
-6. Standards — placement per `context/architecture.md`; tokens-only UI; validated,
+6. Standards — placement per `context/architecture.md`; file names per `context/ui-rules.md` → File naming; tokens-only UI; validated,
    enveloped, auth-guarded APIs; no unlinked TODO/FIXME
 
 ## 8. Context discipline

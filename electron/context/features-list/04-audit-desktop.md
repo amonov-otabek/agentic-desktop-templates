@@ -43,13 +43,13 @@ the client.
 
 - `features/audit/components/{audit-log-table,alert-table}`.
 - `shared/components/ui/*` (`table`, `card`, `tabs`, `badge`, `select`, `button`,
-  `skeleton`, `empty`, `toaster`); widgets `pager`; `shared/hooks/use-pagination`;
-  `shared/hooks/use-permission` (gating); `DashboardLayout`; `lucide-react` icons.
+  `skeleton`, `empty`, `toaster`); widgets `pager`; `shared/hooks/usePagination`;
+  `shared/hooks/usePermission` (gating); `DashboardLayout`; `lucide-react` icons.
 
 ## Acceptance criteria
 
 - [ ] `/audit` renders behind the auth guard (unauthenticated → `/sign-in`) and is role-gated
-      via `use-permission`.
+      via `usePermission`.
 - [ ] The audit-log table paginates and filters by `userId` / `action` / `entity`.
 - [ ] The alert table paginates and filters by `severity` / `resolved`.
 - [ ] Resolving an alert calls `PATCH /audit/alerts/:id/resolve`, invalidates the alerts

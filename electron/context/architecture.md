@@ -67,9 +67,9 @@ src/
         ├── main.tsx          ← React root: StrictMode → Providers → RouterProvider
         ├── app/
         │   ├── router.tsx    ← createHashRouter route tree
-        │   └── home-page.tsx ← placeholder landing page
+        │   └── HomePage.tsx  ← placeholder landing page
         ├── layout/
-        │   └── app-shell.tsx ← <Outlet/> chrome (the desktop frame)
+        │   └── AppShell.tsx  ← <Outlet/> chrome (the desktop frame)
         ├── features/<name>/  ← one folder per domain feature (see Feature shape)
         ├── shared/
         │   ├── components/
